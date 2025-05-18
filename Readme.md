@@ -48,6 +48,13 @@ class Training,Serving service
 class T,M,A,E,U,V component
 class Z storage
 
+2. Add a fallback image section:
+
+<details> <summary>Non-Mermaid Viewers: Click to see diagram image</summary>
+https://mermaid.ink/img/pako:eNp1ksFuwjAMhl8l8nEV0GjHHXahh00COjHtMCG1sSNEaRJlCWOo7N0XGgZMiN0s-_P_2_LJG1QGBQTFhm6dXnGeimWaFEbdLp_twBvD9VRRVgS-Jbrg1SXPco53L7ElLdG9uXKRblFYm47h2FoyM7mxW3QmFwt3v5_BidH-Wjlsc961HyHcdff-9414uz_5vR_8PD1cXiqR-OKYVuCCwTHMBPq9RmW81n5_YZ_0jqrDeE7VGvWZV1SuaCdBwVuJasEzWiO9Qm3JBv0NNUfMKxLUlQe07qRJQYBWGVqKoqfq3pdGEy1zchCUzEe9z05UQ_KpJOnbOXpHn7KsPM1B8UurKFv5FPm5f51_AP8E0Qw?type=png
+</details>
+
+
 ## Data Flow
 1. Training Pipeline processes data and creates model
 2. Model is saved as `churn.zip`
