@@ -19,69 +19,40 @@ The solution consists of three main projects:
 ### MLOps.Tests
 - Contains unit tests and model validation tests
 
-## Solution Architecture Diagram
+## Solution Architecture
 
-┌─────────────────────────────┐
-│       MLOps.Training        │
-│                             │
-│ ┌─────────────────────────┐ │
-│ │     Training Pipeline   │ │          ┌─────────────────────────┐
-│ │ - Data Processing       │ │          │     MLOps.Serving       │
-│ │ - Model Training        │ │          │                         │
-│ │ - Feature Engineering   │ │          │ ┌────────────────────┐  │
-│ └─────────────────────────┘ │          │ │   Web API Service  │  │
-│           │                 │          │ │  - REST Endpoints  │  │
-│           │                 │          │ │  - JSON Responses  │  │
-│           ▼                 │          │ └────────────────────┘  │
-│    [churn.zip model]───────-┼─────────▶│          ▲              │
-└─────────────────────────────┘          │          │              │
-                                         │          ▼              │
-                                         │ ┌────────────────────┐  │
-                                         │ │  Prediction Engine │  │
-                                         │ └────────────────────┘  │
-                                         └─────────────────────────┘
-                                                     ▲
-                                                     │
-                                    ┌────────────────┴──────────────┐
-                                    │        MLOps.Tests            │
-                                    │                               │
-                                    │ ┌────────────────┐            │
-                                    │ │   Unit Tests   │            │
-                                    │ └────────────────┘            │
-                                    │ ┌────────────────┐            │
-                                    │ │  Model Tests   │            │
-                                    │ └────────────────┘            │
-                                    └───────────────────────────────┘
+graph TD %% Main Components subgraph Training["MLOps.Training"] direction TB T[Training Pipeline] --> |Process| M[Model Training] M --> |Export| Z[(churn.zip)] end
+subgraph Serving["MLOps.Serving"]
+    direction TB
+    A[Web API] --> E[Prediction Engine]
+    Z --> |Load| E
+    E --> |Predict| A
+end
 
-Key Features:
-→ MLOps.Training: Builds and exports the ML model
-→ MLOps.Serving: Hosts prediction API and model inference
-→ MLOps.Tests: Ensures quality and validation
-→ churn.zip: Trained model artifact
+subgraph Testing["MLOps.Tests"]
+    direction TB
+    U[Unit Tests]
+    V[Model Tests]
+end
 
-Data Flow:
-1. Training pipeline processes data and creates model
-2. Model is exported as churn.zip
+%% Relationships
+V --> |Validate|E
+U --> |Test|A
+
+%% Styling
+classDef service fill:#f0f7ff,stroke:#2974ba,stroke-width:2px
+classDef component fill:#f5f5f5,stroke:#666,stroke-width:1px
+classDef storage fill:#fff3e0,stroke:#f6a821,stroke-width:2px
+
+class Training,Serving service
+class T,M,A,E,U,V component
+class Z storage
+
+## Data Flow
+1. Training Pipeline processes data and creates model
+2. Model is saved as `churn.zip`
 3. Serving layer loads model for predictions
-4. Tests validate both training and serving components
-
-
-- ## Solution Components Diagram
-
-+-------------------+         Trained Model         +-------------------+
-|                   |  churn.zip (output file)      |                   |
-|  MLOps.Training   +-----------------------------> |   MLOps.Serving   |
-| (Model Training)  |                               |  (Prediction API) |
-+-------------------+                               +-------------------+
-                                                          ^
-                                                          |
-                                                          |
-                                                +-------------------+
-                                                |                   |
-                                                |   MLOps.Tests     |
-                                                | (Unit & Model     |
-                                                |   Validation)     |
-                                                +-------------------+
+4. Tests validate both components
 
 
 
