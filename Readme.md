@@ -20,37 +20,42 @@ The solution consists of three main projects:
 - Contains unit tests and model validation tests
 
 ## Solution Architecture
-
-graph TD %% Main Components subgraph Training["MLOps.Training"] direction TB T[Training Pipeline] --> |Process| M[Model Training] M --> |Export| Z[(churn.zip)] end
-subgraph Serving["MLOps.Serving"]
-    direction TB
-    A[Web API] --> E[Prediction Engine]
-    Z --> |Load| E
-    E --> |Predict| A
-end
-
-subgraph Testing["MLOps.Tests"]
-    direction TB
-    U[Unit Tests]
-    V[Model Tests]
-end
-
-%% Relationships
-V --> |Validate|E
-U --> |Test|A
-
-%% Styling
-classDef service fill:#f0f7ff,stroke:#2974ba,stroke-width:2px
-classDef component fill:#f5f5f5,stroke:#666,stroke-width:1px
-classDef storage fill:#fff3e0,stroke:#f6a821,stroke-width:2px
-
-class Training,Serving service
-class T,M,A,E,U,V component
-class Z storage
-
+```mermaid
 graph TD
-    A[Start] --> B[Process]
-    B --> C[End]
+    %% Main Components
+    subgraph Training["MLOps.Training"]
+        direction TB
+        T[Training Pipeline] --> |Process| M[Model Training]
+        M --> |Export| Z[(churn.zip)]
+    end
+
+    subgraph Serving["MLOps.Serving"]
+        direction TB
+        A[Web API] --> E[Prediction Engine]
+        Z --> |Load| E
+        E --> |Predict| A
+    end
+
+    subgraph Testing["MLOps.Tests"]
+        direction TB
+        U[Unit Tests]
+        V[Model Tests]
+    end
+
+    %% Relationships
+    V --> |Validate|E
+    U --> |Test|A
+
+    %% Styling
+    classDef service fill:#f0f7ff,stroke:#2974ba,stroke-width:2px
+    classDef component fill:#f5f5f5,stroke:#666,stroke-width:1px
+    classDef storage fill:#fff3e0,stroke:#f6a821,stroke-width:2px
+
+    class Training,Serving service
+    class T,M,A,E,U,V component
+    class Z storage
+```
+
 
 ## Data Flow
 1. Training Pipeline processes data and creates model
